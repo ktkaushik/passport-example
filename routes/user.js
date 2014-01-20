@@ -8,5 +8,10 @@ exports.list = function(req, res){
 };
 
 exports.login = function(req, res) {
-	res.render('login', {title: 'Login'})
+	res.render('login', {title: 'Login'});
+};
+
+
+exports.succ = function(req, res) {
+	res.render('succ', {title: 'Successful'});
 };

@@ -57,17 +57,22 @@ app.configure('development', function(){
 passport.use( new LocalStrategy(
   function(username, password, done) {
     User.findOne({username: username}, function(err, user) {
+      console.log('finding the user....... *********************');
       if (err) {
-        return done(err); 
+        console.log('There was an error in the first case ....... *********************');
+        return done(err);
       };
       if(!user) {
+        console.log('No such user was found ....... *********************');
         return done(null, false, { message: 'incorrect Username'} );
       };
 
       if(!user.validPassword( password )){
+        console.log('Incorrect credentials ....... *********************');
         return done(null, false, {message: 'incorrect password'});
       };
 
+      console.log('Everythign worked fine....... *********************');
       return done(null, user);
     })
   })
@@ -106,11 +111,18 @@ function regUser (req, res, next) {
   });
 };
 
+function findUserSession (req, res, next) {
+  console.log('finding the user session and all ****** ****** ****** ****** ****** ****** ****** ****** ****** ****** ****** ****** ');
+  console.log(req.user);
+  next()
+};
+
 app.get('/', routes.index);
 app.get('/users', user.list);
-app.get('/login', regUser ,user.login);
+app.get('/login' ,user.login);
+app.get('/succ' , findUserSession, user.succ);
 app.post('/login', printUsers ,
-  passport.authenticate('local', { successRedirect: '/',
+  passport.authenticate('local', { successRedirect: '/succ',
                                    failureRedirect: '/login',
                                    failureFlash: true }));
 
